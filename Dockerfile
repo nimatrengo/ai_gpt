@@ -15,8 +15,8 @@ RUN node -e "console.log(require('bcrypt').hashSync('test', 10))"
 # Copy the rest of your application's code
 COPY . .
 
-# Make port 8000 available to the world outside this container
-EXPOSE 8000
+# Make port 8001 available to the world outside this container
+EXPOSE 8001
 
 # Command to run the app
 CMD [ "npm", "dev" ]
