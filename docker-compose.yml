@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+  es-node:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.3
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - logger.level=error
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - esnet
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.5.3
+    depends_on:
+      - es-node
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es-node:9200
+      - logging.root.level=error
+    ports:
+      - "5601:5601"
+    networks:
+      - esnet
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "5433:5432"
+    networks:
+      - esnet
+
+  backend:
+    restart: on-failure
+    build: ./
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - es-node
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: 5432
+      ELASTICSEARCH_HOST: http://es-node:9200
+    networks:
+      - esnet
+    command: sh -c "npm run migrate && NODE_ENV=development npm run dev"
+
+networks:
+  esnet: {}
