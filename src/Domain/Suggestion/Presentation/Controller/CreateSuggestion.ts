@@ -62,7 +62,7 @@ export class CreateSuggestionController {
     res: Response
   ): void {
     let botReplyMessage = '';
-    res.writeHead(200, { 'Content-Type': 'text/plain', 'Transfer-Encoding': 'chunked' });
+    res.writeHead(200, { 'Content-Type': 'application/json' });
 
     suggestionMessage.on('content', (delta, snapshot) => {
       botReplyMessage += delta;

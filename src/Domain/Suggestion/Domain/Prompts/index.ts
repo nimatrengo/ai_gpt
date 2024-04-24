@@ -25,6 +25,9 @@ Here are key points to consider in your reply:
   13. Do not include any personal details or sign-offs in the response.
   14. Do not include anything after regards. 
   15. Start with sender name politely using "Dear ${senderName}".
+  16. Do not include any personal details or sign-offs in the response.
+  17. Include HTML <br/> tags for line breaks and ensure that the response is well-structured and free of grammatical errors.
+  18. Translate the emailContent to English and respond in the original language.
 
 ==========================
 

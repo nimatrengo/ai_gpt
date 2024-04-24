@@ -8,10 +8,11 @@ export const basicAuth = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.headers.authorization) {
-    return res.status(401).json({ message: 'Missing Authorization Header' });
+  if (!req.headers['x-ai-token']) {
+    return res.status(401).json({ message: 'Missing X-AI-Token Header' });
   }
-  const token = req.headers.authorization.split(' ')[1];
+  const token = req.headers['x-ai-token'] as string;
+  console.log({ token })
   try {
     const decoded = jwt.verify(token, SECRET_KEY) as {
       userId: number;
